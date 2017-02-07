@@ -1,0 +1,10 @@
+<?php 
+
+		echo $_POST['etablissement'];
+		echo '<br/>';
+		echo $_POST['ou'];
+		echo '<br/>';
+		echo $_POST['vous'];
+
+
+	 ?>
