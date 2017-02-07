@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+</head>
+<body>
+	<form action="phpformulaire.php" method="post">
+		<p><h1><center>D'ou venez vous ?</center></h1>
+		<input type="text" name="etablissement" placeholder="Ex: Lycée St Joseph">
+		<p><h1><center>D'ou  ?</center></h1>
+		<input type="text" name="ou" placeholder="Ex: Lycée St Joseph">
+		<p><h1><center>venez vous ?</center></h1>
+		<input type="text" name="vous" placeholder="Ex: Lycée St Joseph">
+		<input type="submit" name="Valider">
+		</p>
+	</form>
+	
+</body>
+</html>
