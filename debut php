@@ -1,10 +1,22 @@
-<?php 
+<?php
+	try
+{
+	$bdd = new PDO('mysql:host=localhost;dbname=tablemougo;charset=utf8', 'root', '');
+}
+catch(Exception $e)
+{
+        die('Erreur : '.$e->getMessage());
+}
 
-		echo $_POST['etablissement'];
-		echo '<br/>';
-		echo $_POST['ou'];
-		echo '<br/>';
-		echo $_POST['vous'];
-
-
-	 ?>
+	echo $_POST['Nom'];
+	echo $_POST['CP'];
+	$req = $bdd->prepare('INSERT INTO visiteur(Nom, Prenom, Mail, CodePostal) VALUES(:nom, :prenom, :mail, cp)');
+$req->execute(array(
+	'nom' => $_POST['nom'],
+	'prenom' => $_POST['prenom'],
+	'mail' => $_POST['mail'],
+	'cp' => $_POST['cp']
+	));
+	echo $_POST['nom'];echo $_POST['prenom'];echo $_POST['mail'];echo $_POST['cp'];
+ echo 'Le jeu a bien été ajouté !';
+ ?> 
