@@ -1,0 +1,20 @@
+if (empty($_POST['nouvelle_connaissances'])) {
+		}
+		else{
+			$sqlmax = mysql_query('SELECT * FROM connaissance order by idconnaissance asc'); 
+			$lastid = "0"; 
+			while ($datamax = mysql_fetch_array($sqlmax)){ 
+			$id = $datamax['idconnaissance']; 
+			if($id > $lastid){ 
+			$lastid = $id; 
+			$maxid = $id; 
+			} 
+			} 
+			$id = $maxid+1;
+			$connaissance = $_POST['connaissance'];
+			$req = $bdd->prepare('INSERT INTO connaissance(idconnaissance, Libelle) VALUES(:id, :libelle)');
+			$req->execute(array(
+				'id' => $id,
+				'libelle' => $connaissance
+				));
+			echo '$id';
