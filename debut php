@@ -1,22 +1,126 @@
+<form action="phpformulaire.php" method="post">
 <?php
-	try
+//-------------------------------------------------------------------------Connexion base de données---------------------------------------------------------------------------------------
+try
 {
 	$bdd = new PDO('mysql:host=localhost;dbname=tablemougo;charset=utf8', 'root', '');
 }
-catch(Exception $e)
+catch (Exception $e)
 {
-        die('Erreur : '.$e->getMessage());
+        die('Erreur : ' . $e->getMessage());
 }
 
-	echo $_POST['Nom'];
-	echo $_POST['CP'];
-	$req = $bdd->prepare('INSERT INTO visiteur(Nom, Prenom, Mail, CodePostal) VALUES(:nom, :prenom, :mail, cp)');
-$req->execute(array(
-	'nom' => $_POST['nom'],
-	'prenom' => $_POST['prenom'],
-	'mail' => $_POST['mail'],
-	'cp' => $_POST['cp']
+
+//--------------------------------------------------------------------------------------------------bloc etablissement----------------------------------------------------------------------------------
+		$rep = $bdd->query('SELECT * FROM etablissement');
+		echo 'Etablissement : <select name="etablissement"><optgroup label="etablissement">';
+		while ($donnees = $rep->fetch())
+		{
+		?>
+		<option value="<?php echo $donnees['idetablissement']; ?>"><?php echo $donnees['Libelle']; ?></option>
+		<?php
+		}
+		?>
+		
+		</select>
+		<?php
+		$rep->closeCursor(); // Déconnexion de MySQL
+
+//--------------------------------------------------------------------------------------------------bloc sectionProvenance----------------------------------------------------------------------------------
+		$rep = $bdd->query('SELECT * FROM sectionprovenance');
+		echo '<br>Section de provenance :<select name="sectionp"><option value="">- Choisir une section -</option>';
+		while ($donnees = $rep->fetch())
+		{
+		?>
+		<option value="<?php echo $donnees['idsectionProvenance']; ?>"><?php echo $donnees['Libelle']; ?></option>
+		<?php
+		}
+		?>
+		
+		</select>
+		<?php
+		$rep->closeCursor(); // Déconnexion de MySQL
+
+//--------------------------------------------------------------------------------------------------bloc diplome----------------------------------------------------------------------------------
+		$rep = $bdd->query('SELECT * FROM diplome');
+		echo '<br>Diplome :<select name="diplome"><option value="">- Choisir un diplome-</option>';
+		while ($donnees = $rep->fetch())
+		{
+		?>
+		<option value="<?php echo $donnees['iddiplome']; ?>"><?php echo $donnees['Libelle']; ?></option>
+		<?php
+		}
+		?>
+		
+		</select>
+		<?php
+		$rep->closeCursor(); // Déconnexion de MySQL
+
+//--------------------------------------------------------------------------------------------------bloc section----------------------------------------------------------------------------------
+		$rep = $bdd->query('SELECT * FROM section');
+		echo '<br>Section a visiter :<select name="sectionv"><option value="">- Choisir une section -</option>';
+		while ($donnees = $rep->fetch())
+		{
+		?>
+		<option value="<?php echo $donnees['idsection']; ?>"><?php echo $donnees['Libelle']; ?></option>
+		<?php
+		}
+		?>
+		</select>
+		<?php
+		$rep->closeCursor(); // Déconnexion de MySQL
+
+//--------------------------------------------------------------------------------------------------bloc connaissance----------------------------------------------------------------------------------
+		$rep = $bdd->query('SELECT * FROM connaissance');
+		echo '<br>Connaissance de Stjo :<select name="connaissance"><option value="">- Choisir connaissance -</option>';
+		while ($donnees = $rep->fetch())
+		{
+		?>
+		<option value="<?php echo $donnees['idconnaissance']; ?>"><?php echo $donnees['Libelle']; ?></option>
+		<?php
+		}
+		?>
+		</select>
+		<?php
+		$rep->closeCursor(); // Déconnexion de MySQL
+
+
+
+
+//------------------------------------------------------------------------------------------------bloc INSERT----------------------------------------------------------------------------------------------
+		?>
+		
+
+		<br>Nom<input type="text" name="nom">
+		<br>prenom<input type="text" name="prenom">
+		<br>cp<input type="number" name="cp">
+		<br>mail<input type="text" name="mail">
+	
+
+
+		<?php
+
+$etablissement = $_POST['etablissement'];
+$sectionp = $_POST['sectionp'];
+$diplome = $_POST['diplome'];
+$sectionv = $_POST['sectionv'];
+$connaissance = $_POST['connaissance'];
+$mail = $_POST['mail'];
+$nom = $_POST['nom'];
+$prenom= $_POST['prenom'];
+$cp = $_POST['cp'];
+
+$req = $bdd->prepare('INSERT INTO visiteur(etablissement_idetablissement, sectionProvenance_idsectionProvenance, section_idsection, connaissance_idconnaissance, Nom, Prenom, Mail, CodePostal) VALUES (:etablissement_idetablissement, :sectionProvenance_idsectionProvenance, :section_idsection, :connaissance_idconnaissance, :Nom, :Prenom, :Mail, :CodePostal)');
+$test = $req->execute(array(
+	"etablissement_idetablissement" => $etablissement,
+	"sectionProvenance_idsectionProvenance" => $sectionp,
+	"section_idsection" => $sectionv,
+	"connaissance_idconnaissance" => $connaissance,
+	"Mail" => $mail,
+	"Nom" => $nom,
+	"Prenom" => $prenom,
+	"CodePostal" => $cp
 	));
-	echo $_POST['nom'];echo $_POST['prenom'];echo $_POST['mail'];echo $_POST['cp'];
- echo 'Le jeu a bien été ajouté !';
- ?> 
+?>
+<input type="submit" name="Valider">
+</form>
